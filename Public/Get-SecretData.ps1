@@ -26,41 +26,36 @@
     .FUNCTIONALITY
         Google Apps
     #>
+    [CmdletBinding(DefaultParameterSetName="Key")]
     param(
-        [parameter(Mandatory=$true)]
-        $Key = "SecretData",
-
+        [parameter(Mandatory=$false,ParameterSetName="Key")]
+        [string]
+        $Key,
+        [parameter(Mandatory=$false,ParameterSetName="Full")]
+        [switch]
+        $Full,
         [parameter(Mandatory=$false)]
         [ValidateScript({Test-Path $_})]
+        [string]
         $Path = "$ModuleRoot\$env:USERNAME-$env:COMPUTERNAME-SecretData.xml"
     )
 function Decrypt {
-    param($String)
-    if($String -is [System.Security.SecureString])
+param($String)
+if($String -is [System.Security.SecureString])
     {
-        [System.Runtime.InteropServices.marshal]::PtrToStringAuto(
-            [System.Runtime.InteropServices.marshal]::SecureStringToBSTR(
-                $string))
+    [System.Runtime.InteropServices.marshal]::PtrToStringAuto([System.Runtime.InteropServices.marshal]::SecureStringToBSTR($string))
     }
 }
     
-$Script:SecretData = Import-Clixml
+$Script:SecretData = Import-Clixml -Path $Path
 
-    if($PSCmdlet.ParameterSetName -eq 'source' -and $Source -eq "SecretData" -and -not $PSBoundParameters.ContainsKey('Path'))
-    {
-        $Script:SecretData
-    }
-    else
-    {
-
-        Import-Clixml -Path $Path |
-            Select -Property @{N='P12KeyPath';E={Decrypt $_.P12KeyPath}},
-                @{N='Scopes';E={(Decrypt $_.Scopes) -split ","}},
-                @{N='AppEmail';E={Decrypt $_.AppEmail}},
-                @{N='AdminEmail';E={Decrypt $_.AdminEmail}},
-                @{N='CustomerID';E={Decrypt $_.CustomerID}},
-                @{N='Domain';E={Decrypt $_.Domain}},
-                @{N='Preference';E={Decrypt $_.Preference}}
-    }
-
+<# |
+    Select -Property @{N='P12KeyPath';E={Decrypt $_.P12KeyPath}},
+        @{N='Scopes';E={(Decrypt $_.Scopes) -split ","}},
+        @{N='AppEmail';E={Decrypt $_.AppEmail}},
+        @{N='AdminEmail';E={Decrypt $_.AdminEmail}},
+        @{N='CustomerID';E={Decrypt $_.CustomerID}},
+        @{N='Domain';E={Decrypt $_.Domain}},
+        @{N='Preference';E={Decrypt $_.Preference}}
+        #>
 }

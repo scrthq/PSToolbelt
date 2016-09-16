@@ -25,8 +25,8 @@
         [string]
         $Key,
         [parameter(Mandatory=$true)]
-        [hashtable]
-        $Contents,
+        [string]
+        $Value,
         [parameter(Mandatory=$false)]
         [string]
         $Path = "$ModuleRoot\$env:USERNAME-$env:COMPUTERNAME-SecretData.xml"
@@ -38,7 +38,7 @@ function Encrypt {
         ConvertTo-SecureString -String $string -AsPlainText -Force
         }
     }
-$Script:SecretData = [pscustomobject]@{$Key=$(Encrypt $($Contents | ConvertTo-Json | Out-String))}
+$Script:SecretData = [pscustomobject]@{Key=$Key;Value=$(Encrypt $Value)}
 #Write the global variable and the xml
 $Script:SecretData | Export-Clixml -Path $Path -Force
 }
