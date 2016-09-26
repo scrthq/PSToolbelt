@@ -128,7 +128,11 @@ elseif ($MessageType -eq "WARNING")
     }
 elseif ($MessageType -eq "ERROR")
     {
+    $ErrBack = $ErrorActionPreference
+    $ErrorActionPreference = "SilentlyContinue"
     Write-Error $Message
+    Write-Host -ForegroundColor Red $Message
+    $ErrorActionPreference = $ErrBack
     if ($WriteToEventLog)
         {
         Write-EventLog -LogName Automation -Source PSScript -EntryType Error -Message $Message -EventId 1002
