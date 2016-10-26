@@ -17,7 +17,7 @@
       [String]
       $BackgroundColor,
       [parameter(Mandatory=$false,ParameterSetName="Message")]
-      [ValidateSet("INFO","WARNING","ERROR")]
+      [ValidateSet("INFO","WARNING","ERROR","VERBOSE","DEBUG")]
       [String]
       $MessageType="INFO",
       [parameter(Mandatory=$false,ParameterSetName="Message")]
@@ -136,6 +136,28 @@ elseif ($MessageType -eq "ERROR")
     if ($WriteToEventLog)
         {
         Write-EventLog -LogName Automation -Source PSScript -EntryType Error -Message $Message -EventId 1002
+        }
+    }
+elseif ($MessageType -eq "VERBOSE")
+    {
+    $VerBack = $VerbosePreference
+    $VerbosePreference = "Continue"
+    Write-Verbose $Message
+    $VerbosePreference = $VerBack
+    if ($WriteToEventLog)
+        {
+        Write-EventLog -LogName Automation -Source PSScript -EntryType Information -Message $Message -EventId 1003
+        }
+    }
+elseif ($MessageType -eq "DEBUG")
+    {
+    $BugBack = $DebugPreference
+    $DebugPreference = "Continue"
+    Write-Debug $Message
+    $DebugPreference = $BugBack
+    if ($WriteToEventLog)
+        {
+        Write-EventLog -LogName Automation -Source PSScript -EntryType Information -Message $Message -EventId 1004
         }
     }
 }
