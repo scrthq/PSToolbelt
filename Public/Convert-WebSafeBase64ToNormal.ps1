@@ -8,7 +8,7 @@
       [String]
       $OutFile
     )
-$WebSafeBase64String = $WebSafeBase64String.Replace('_', '/').Replace('-', '+')
+$WebSafeBase64String = $WebSafeBase64String.Replace('_', '/').Replace('-', '+').Replace('|','=')
 switch ($WebSafeBase64String.Length % 4)
     {
     2 {$WebSafeBase64String += "=="}
@@ -16,7 +16,7 @@ switch ($WebSafeBase64String.Length % 4)
     }
 if ($OutFile)
     {
-    $WebSafeBase64String | Out-File $OutFile
+    $WebSafeBase64String | Set-Content $OutFile -Force
     }
 else
     {
