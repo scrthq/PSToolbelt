@@ -1,18 +1,18 @@
 #Get public and private function definition files.
-    $Public  = @( Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -ErrorAction SilentlyContinue )
-    $Private = @( Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -ErrorAction SilentlyContinue )
-    $ModuleRoot = $PSScriptRoot
+$Public  = @( Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -ErrorAction SilentlyContinue )
+$Private = @( Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -ErrorAction SilentlyContinue )
+$ModuleRoot = $PSScriptRoot
 
 #Dot source the files
-    Foreach($import in @($Public + $Private))
+foreach($import in @($Public + $Private))
     {
-        Try
+    Try
         {
-            . $import.fullname
+        . $import.fullname
         }
-        Catch
+    Catch
         {
-            Write-Error -Message "Failed to import function $($import.fullname): $_"
+        Write-Error -Message "Failed to import function $($import.fullname): $_"
         }
     }
 <#
@@ -43,7 +43,7 @@
     {
         #Import the config
         if ($SecretData){Remove-Variable PSToolbelt -ErrorAction SilentlyContinue}
-        $SecretData = Get-PSToolbeltConfig -Source "SecretData.xml" -ErrorAction Stop
+        $SecretData = Get-PSToolbeltConfig -Source "PSToolbelt.xml" -ErrorAction Stop
 
     }
     Catch
