@@ -40,4 +40,8 @@ if ($current -eq $Original)
     $bytes[$Offset] = $newByte
     [System.IO.File]::WriteAllBytes($NewFilePath, $bytes)
     }
+else
+    {
+    Write-Error "The current hex at offset $Offset does not match the original provided. Current: $Current"
+    }
 }
