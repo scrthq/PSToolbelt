@@ -13,6 +13,10 @@ Begin
         $SaveTo = $Path
         $Path = Get-ChildItem $Path -Filter "*.ps1xml" | Select-Object -ExpandProperty FullName
         }
+    else
+        {
+        $SaveTo = (Get-Item $Path).Directory.FullName
+        }
     }
 Process
     {
