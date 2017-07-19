@@ -2,7 +2,7 @@
     [cmdletBinding(DefaultParameterSetName="Message")]
     Param
     (
-      [parameter(Mandatory=$true,ParameterSetName="Message",Position=0)]
+      [parameter(Mandatory=$true,ParameterSetName="Message",Position=0,ValueFromPipeline=$true)]
       [String]
       $Message,
       [parameter(Mandatory=$false,ParameterSetName="Message",Position=1)]
