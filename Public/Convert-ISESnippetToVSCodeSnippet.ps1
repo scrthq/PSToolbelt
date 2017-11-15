@@ -126,8 +126,16 @@ function Convert-ISESnippetToVSCodeSnippet
 
                     [xml]$xml = Get-Content $snip.FullName
                     $name = $xml.Snippets.Snippet.Header.Title
-                    $prefix = "ISE_$($name -replace ' ','')"
-
+                    [string]$CleanedSnippetDirectoryName = ($snip.DirectoryName | Split-Path -Leaf).Replace('Snippets','')
+                    if(![string]::IsNullOrWhiteSpace($CleanedSnippetDirectoryName))
+                    {
+                         $Folder = $CleanedSnippetDirectoryName + "_"
+                    }
+                    else 
+                    {
+                    [string]$Folder=''  }
+                    $prefix = "ISE_$($Folder)$($name -replace ' ','')"
+                    write-verbose "New Snippet Name: $prefix"
                     write-debug "CaretOffset"
                     write-debug ($xml.Snippets.Snippet.Code.Script.CaretOffset | format-list | out-string) -Verbose
                     [int]$CaretOffset = [int]($xml.Snippets.Snippet.Code.Script.CaretOffset) - [int]1
@@ -169,4 +177,3 @@ function Convert-ISESnippetToVSCodeSnippet
           return $vsCodeSnippets
      }
 }
-
