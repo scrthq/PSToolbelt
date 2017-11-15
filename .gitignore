@@ -1,3 +1,9 @@
 **.xml
 Public/Register-SublimeText3.ps1
 Public/Send-CompletionEmail.ps1
+bin/EmailTemplates/Responsive.html
+bin/EmailTemplates/ResponsiveBAK.html
+bin/EmailTemplates/Unresponsive.html
+Public/Get-Environment.ps1
+Public/Import-Key.ps1
+Public/Send-JobReport.ps1
