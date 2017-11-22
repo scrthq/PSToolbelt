@@ -1,4 +1,4 @@
-﻿function Convert-ISESnippetToVSCodeSnippet {
+function Convert-ISESnippetToVSCodeSnippet {
     Param
     (
         [parameter(Mandatory = $false,Position = 0,ValueFromPipeline = $true)]
